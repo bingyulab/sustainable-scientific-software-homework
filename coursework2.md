@@ -7,22 +7,20 @@ Sustainable Scientific Software Coursework 2.
 
 Please ask questions on the course Moodle.
 
-*Deadline: 2nd July end of day. No extensions.*
+_Deadline: 2nd July end of day. No extensions._
 
 The email should contain a link to a GitHub repository (shared with me `jhale`
 and `mail@jackhale.co.uk`) with:
 
-* a modified version of this file `coursework2.md` file containing the specific
-  commands that you used to complete the exercises. You do not have to include
-  everything, just the key commands. I have left placeholders where these
-  commands should go:
+- a modified version of this file `coursework2.md` file containing the specific commands that you used to complete the exercises. You do not have to include everything, just the key commands. I have left placeholders where these commands should go:
 
-    ```
-    # Add your commands here
-    ```
-* A `wallet.py` file that passes the unit tests.
-* A `Dockerfile`.
-* A working GitHub Actions file `.github/workflows/test.yml` that runs the unit
+```
+# Add your commands here
+```
+
+- A `wallet.py` file that passes the unit tests.
+- A `Dockerfile`.
+- A working GitHub Actions file `.github/workflows/test.yml` that runs the unit
   tests inside the built image.
 
 ## High level overview
@@ -35,32 +33,30 @@ of:
 1. A `Dockerfile` describing an environment containing `python` and the Python module
    `pytest`.
 
-2. A Docker image built from the `Dockerfile` and uploaded to the Dockerhub.
+1. A Docker image built from the `Dockerfile` and uploaded to the Dockerhub.
 
-3. A simple Python program describing a simple Wallet class and a set of unit tests.
+1. A simple Python program describing a simple Wallet class and a set of unit tests.
 
-4. A continuous integration setup using GitHub Actions.
+1. A continuous integration setup using GitHub Actions.
 
 For reference, you can use my notes that I used during the course
-[here](../../notes/README_instructor.md). 
+[here](../../notes/README_instructor.md).
 
 ## Setting up a git version control repository
 
-1. Go to [GitHub](https://github.com). Click on the plus icon in the top right
-   hand corner of the screen. Then click on New Repository.
+1.  Go to [GitHub](https://github.com). Click on the plus icon in the top right hand corner of the screen. Then click on New Repository.
 
-2. Create a *private* repository called e.g.
-   `jhale/sustainable-scientific-software-homework`.
+2.  Create a _private_ repository called e.g. `jhale/sustainable-scientific-software-homework`.
 
-3. Clone your repository. In a terminal run, e.g.:
+3.  Clone your repository. In a terminal run, e.g.: `git clone git@github.com:jhale/sustainable-scientific-software-homework.git` substituting with the correct location of your repository.
 
-       git clone git@github.com:jhale/sustainable-scientific-software-homework.git
-
-   substituting with the correct location of your repository.
-
-4. Copy this `coursework2.md` text file to your new repository (download from
-   [here](https://raw.githubusercontent.com/jhale/sustainable-scientific-software/main/courseworks/coursework2/coursework2.md).
-   `git add`, `git commit` and `git push` it to your repository.
+4.  Copy this `coursework2.md` text file to your new repository (download from [here](https://raw.githubusercontent.com/jhale/sustainable-scientific-software/main/courseworks/coursework2/coursework2.md).    `git add`, `git commit` and `git push` it to your repository.
+```
+wget https://raw.githubusercontent.com/jhale/sustainable-scientific-software/main/courseworks/coursework2/coursework2.md
+git add coursework2.md
+git commit -m "Add Dockerfile"
+git push
+```
 
 ## Dockerfile
 
@@ -78,7 +74,9 @@ CMD ["/bin/bash", "-l"]
 2. `git add` and `git push` the file `Dockerfile` to the repository.
 
 ```
-# Add your commands here
+git add Dockerfile
+git commit -m "Add Dockerfile"
+git push
 ```
 
 ## Build and push Docker image
@@ -88,52 +86,58 @@ CMD ["/bin/bash", "-l"]
    `<yourdockerhubusername>/sss.
 
 ```
-# Add your commands here
+docker build -t bingyujiang/sss .
+docker login
+docker push bingyujiang/sss
 ```
 
 ## Run a container, and share in files from the host.
 
-1. `docker run` the image. Use the `-v` flag to share the root of the git
-   repository to `/root/shared` inside the container. Use the `-ti` flag to get
-   an interactive prompt inside the running container.
+1. `docker run` the image. Use the `-v` flag to share the root of the git repository to `/root/shared` inside the container. Use the `-ti` flag to get an interactive prompt inside the running container.
 
 ```
-# Add your commands here
+docker run -it -v $(pwd):/root/shared bingyujiang/sss
 ```
 
 ## Setup a simple Python test suite
 
-1. In a terminal running on the host (outside the container), copy across the
-   files ``wallet.py`` and
-   ``test_wallet.py`` to the root of your homework
-   repository.  ``git add``, ``git commit`` and ``git push`` them.
+1. In a terminal running on the host (outside the container), copy across the files `wallet.py` and `test_wallet.py` to the root of your homework repository. `git add`, `git commit` and `git push` them.
 
 ```
-# Add your commands here
+wget https://raw.githubusercontent.com/jhale/sustainable-scientific-software/main/courseworks/coursework2/wallet.py
+wget https://raw.githubusercontent.com/jhale/sustainable-scientific-software/main/courseworks/coursework2/test_wallet.py
+git add wallet.py test_wallet.py
+git commit -m "Add wallet file and test file"
+git push
 ```
 
-2. Start a Docker container using your image and share your repository into a
-   directory `/root/shared` into the container.
+2. Start a Docker container using your image and share your repository into a    directory `/root/shared` into the container.
 
 ```
-# Add your commands here
+docker run -it -v $(pwd):/root/shared bingyujiang/sss
 ```
-3. Run the tests inside the container by going to `/root/shared` and running the
-   command `py.test`. The tests should fail.
 
-3. In a terminal on the host modify ``wallet.py`` until the tests in
-   ``test_wallet.py`` all pass.
+3. Run the tests inside the container by going to `/root/shared` and running the    command `pytest`. The tests should fail.
 
-4. ``git add``, ``git commit`` and ``git push`` the working ``wallet.py`` file.
+4. In a terminal on the host modify `wallet.py` until the tests in `test_wallet.py` all pass.
+
+5. `git add`, `git commit` and `git push` the working `wallet.py` file.
+```
+git add wallet.py
+git commit -m "Make tests pass"
+git push
+```
 
 ## GitHub Actions for Continuous Integration
 
-1. Using the example in the class notes make a `.github/workflows/test.yml`
-   file that checks out your repository and runs the unit tests inside the
-   Docker image that you pushed to the DockerHub.
+1. Using the example in the class notes make a `.github/workflows/test.yml` file that checks out your repository and runs the unit tests inside the Docker image that you pushed to the DockerHub.
 
-3. Push the `.github/workflows/test.yml` file to GitHub. Check that you get the
-   green tick showing that your tests pass.
+2. Push the `.github/workflows/test.yml` file to GitHub. Check that you get the green tick showing that your tests pass.
+```
+git add .github/workflows/test.yml
+git commit -m "Add GitHub Actions workflow for CI"
+git push
+```
 
 ## Submission
 

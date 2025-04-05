@@ -1,5 +1,4 @@
-# wallet.py
-
+# -*- coding: utf-8 -*-
 class InsufficientAmount(Exception):
     pass
 
